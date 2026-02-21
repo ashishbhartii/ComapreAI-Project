@@ -3,10 +3,11 @@
 .page{
 background:#0b1020;
 min-height:100vh;
-padding-bottom:180px;
+padding-bottom:140px;
 }
 
 .container{
+padding-top:10px;
 width:100%;
 max-width:1800px;
 margin:auto;
@@ -20,7 +21,7 @@ z-index:2;
 .title{
 font-size:42px;
 font-weight:700;
-margin:24px 0 64px 0;
+margin:18px 0 24px 0;
 font-family:Inter, sans-serif;
 color:white;
 transition:margin 400ms ease;
@@ -32,10 +33,10 @@ transition:margin 400ms ease;
 
 display:flex;
 
-gap:20px;
+gap:16px;
 position:relative;
 z-index:1;
-padding:20px 20px; 
+padding:10px 10px; 
 
 overflow-x:auto;
 
@@ -62,27 +63,32 @@ display:none;
 
 .card{
 
-min-width:380px;
-max-width:380px;
-position: relative;
-overflow:hidden; 
-height:620px;
+width:320px;
+min-width:320px;
+max-width:320px;
+
+height:480px;
 
 background:#111827;
 
-border-radius:14px;
-
-padding:16px;
+border-radius:12px;
 
 display:flex;
-
 flex-direction:column;
 
 flex-shrink:0;
 
-border:2px solid #1f2937;
+border:1px solid #1f2937;
 
-transition:all .25s ease;
+padding:12px;
+
+position:relative;
+overflow:hidden;
+
+transition:
+transform 400ms cubic-bezier(.22,.61,.36,1),
+box-shadow .35s ease,
+border-color .35s ease;
 
 }
 
@@ -135,9 +141,7 @@ margin-bottom:10px;
 .modelName{
 
 font-weight:600;
-
-font-size:16px;
-
+font-size:14px;
 color:#f3f4f6;
 
 }
@@ -183,13 +187,11 @@ background:#1d4ed8;
 .responseBox{
 
 flex:1;
-
 overflow:auto;
-
 padding-right:4px;
-
 scrollbar-width:none;
-
+font-size: 13.5px;
+line-height: 1.45;
 }
 
 .responseBox::-webkit-scrollbar{
@@ -220,7 +222,7 @@ left:50%;
 
 transform:translateX(-50%) translateY(20px);
 
-width:50%;
+width:42%;
 
 background:#1f2937;
 
@@ -292,13 +294,17 @@ left:50%;
 
 transform:translateX(-50%);
 
-width:60%;
+width:55%;
 
-background:#111827;
+background:rgba(17,24,39,0.75);
+
+backdrop-filter:blur(10px);
+
+border:1px solid rgba(255,255,255,0.05);
 
 border-radius:28px;
 
-padding:12px 14px;
+padding:10px 14px;
 
 display:flex;
 
@@ -306,7 +312,10 @@ align-items:center;
 
 gap:10px;
 
-box-shadow:0 0 20px rgba(0,0,0,.6);
+box-shadow:
+0 10px 30px rgba(0,0,0,0.35);
+
+z-index:100;
 
 }
 
