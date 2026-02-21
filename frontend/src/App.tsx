@@ -373,46 +373,69 @@ setTimeout(() => {
 
         buffer += decoder.decode(value);
 
-        const events = buffer.split("\n");
+const events = buffer.split("\n");
 
-        for (let i = 0; i < events.length - 1; i++) {
+for (let i = 0; i < events.length - 1; i++) {
 
-          const event =
-            JSON.parse(events[i]);
+  const line = events[i].trim();
 
-          if (event.type === "token") {
+  if (!line) continue;
 
-            setResponses(p => ({
-              ...p,
-              [model]: p[model] + event.token
-            }));
+  let event;
 
-          }
+  try {
+    event = JSON.parse(line);
+  } catch {
+    continue;
+  }
 
-          if (event.type === "complete") {
+  if (event.type === "start") {
+    continue;
+  }
 
-            setShowMetrics(true);
+  if (event.type === "token") {
 
-            setMetrics(p => ({
-              ...p,
-              [model]: {
-                latency: event.latency || 0,
-                length: event.length || 0,
-                accuracy: event.accuracy || 0,
-                overallScore: event.overallScore || 0,
-                speedTier: event.speedTier || "failed"
-              }
-            }));
+    setResponses(p => ({
+      ...p,
+      [model]: p[model] + event.token
+    }));
 
-            setStatus(p => ({
-              ...p,
-              [model]: event.success ? "success" : "failed"
-            }));
-          }
+  }
 
-        }
+  if (event.type === "complete") {
 
-        buffer = events[events.length - 1];
+    setShowMetrics(true);
+
+    setMetrics(p => ({
+      ...p,
+      [model]: {
+        latency: event.latency || 0,
+        length: event.length || 0,
+        accuracy: event.accuracy || 0,
+        overallScore: event.overallScore || 0,
+        speedTier: event.speedTier || "failed"
+      }
+    }));
+
+    setStatus(p => ({
+      ...p,
+      [model]: event.success ? "success" : "failed"
+    }));
+
+  }
+
+  if (event.type === "error") {
+
+    setStatus(p => ({
+      ...p,
+      [model]: "failed"
+    }));
+
+  }
+
+}
+
+buffer = events[events.length - 1];
 
       }
 
