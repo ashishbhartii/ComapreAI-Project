@@ -67,7 +67,9 @@ width:320px;
 min-width:320px;
 max-width:320px;
 
-height:480px;
+height: auto;
+min-height: 420px;
+max-height: 72vh;
 
 background:#111827;
 
@@ -80,15 +82,16 @@ flex-shrink:0;
 
 border:1px solid #1f2937;
 
-padding:12px;
+padding: 12px 12px 10px 12px;
 
 position:relative;
 overflow:hidden;
 
+
 transition:
-transform 400ms cubic-bezier(.22,.61,.36,1),
-box-shadow .35s ease,
-border-color .35s ease;
+transform 220ms ease,
+box-shadow 180ms ease,
+border-color 180ms ease;
 
 }
 
@@ -184,18 +187,22 @@ background:#1d4ed8;
 
 /* ================= RESPONSE ================= */
 
-.responseBox{
+.responseBox {
 
-flex:1;
-overflow:auto;
-padding-right:4px;
+flex: 1;
+
+overflow-y: auto;
+
+margin-top: 6px;
+
+padding-right: 4px;
+
 scrollbar-width:none;
-font-size: 13.5px;
-line-height: 1.45;
+
 }
 
-.responseBox::-webkit-scrollbar{
-display:none;
+.responseBox::-webkit-scrollbar {
+display: none;
 }
 
 .markdown{
@@ -526,19 +533,6 @@ opacity:.55;
 }
 
 
-/* ================= SMOOTH CARD ANIMATION ================= */
-
-.card{
-
-transition:
-
-transform 600ms cubic-bezier(.2,.8,.2,1),
-
-box-shadow .35s ease,
-
-border-color .35s ease;
-
-}
 
 
 /* ================= METRICS PANEL POLISH ================= */
@@ -748,8 +742,8 @@ transform 600ms cubic-bezier(.22,.61,.36,1);
   align-items: center;
   gap: 12px;
 
-  margin-top: 8px;
-  margin-bottom: 8px;
+  margin-top: 6px;
+  margin-bottom: 6px;
 
 }
 
@@ -1110,7 +1104,7 @@ left:140%;
 
 filter: blur(2px);
 
-opacity: 0.75;
+opacity: 0.45;
 
 transform: scale(0.995);
 
@@ -1131,22 +1125,6 @@ filter: none !important;
 
 }
 
-/* ================= GLOBAL REVEAL BLUR ================= */
-
-.card.globalBlur {
-
-filter: blur(6px);
-
-opacity: 0.35;
-
-transform: scale(0.98);
-
-transition:
-filter 300ms ease,
-opacity 300ms ease,
-transform 300ms ease;
-
-}
 
 /* ================= WINNER REVEAL OVERLAY ================= */
 
