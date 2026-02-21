@@ -984,7 +984,13 @@ ${globalRevealActive && winnerSpotlight !== model.key
 
           {/* Ends here */}
 
-          <div className="responseBox">
+          <div
+  className="responseBox"
+  style={{
+    maxHeight: "320px",
+    overflowY: "auto"
+  }}
+>
 
             {status[model.key] === "loading"
               ? "Typing..."
@@ -1006,15 +1012,32 @@ ${globalRevealActive && winnerSpotlight !== model.key
 
   return (
 
-    <div className="page">
+    <div className="page" style={{
+  height: "100vh",
+  display: "flex",
+  flexDirection: "column",
+  overflow: "hidden"
+}}>
 
-      <div className="container">
+      <div
+  className="container"
+  style={{
+    flex: 1,
+    overflowY: "auto",
+    paddingBottom: "140px"
+  }}
+>
 
         <h1 className="title">
           CompareAI
         </h1>
 
-        <div className="cardGrid">
+        <div
+  className="cardGrid"
+  style={{
+    alignItems: "start"
+  }}
+>
           {displayOrder.map(renderCard)}
         </div>
 
@@ -1082,7 +1105,17 @@ ${globalRevealActive && winnerSpotlight !== model.key
 
       )}
 
-      <div className="searchSticky">
+      <div
+  className="searchSticky"
+  style={{
+    position: "fixed",
+    bottom: "20px",
+    left: "50%",
+    transform: "translateX(-50%)",
+    width: "min(900px, 92%)",
+    zIndex: 1000
+  }}
+>
 
         <div className="plusBtn">+</div>
 
