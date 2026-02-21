@@ -349,7 +349,7 @@ setTimeout(() => {
     try {
 
       const res = await fetch(
-        "http://localhost:3001/ai/query-stream",
+        "https://compareai-backend.onrender.com/ai/query-stream",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
