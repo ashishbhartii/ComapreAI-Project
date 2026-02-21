@@ -1,63 +1,98 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
 
-  constructor(
-    private readonly appService: AppService
-  ) {}
-
   /**
-   * Root endpoint
-   * Used for basic health check
+   * ROOT ENDPOINT
+   * Used for basic service verification
+   * Accessible at: /
    */
   @Get()
-  getHello(): object {
+  root(): object {
 
     return {
       status: "ok",
       service: "CompareAI Backend",
-      version: "1.0.0",
-      uptime: process.uptime(),
+      version: "2.0.0",
+      environment: process.env.NODE_ENV || "development",
+      streaming: true,
+      scoring: true,
+      uptimeSeconds: Math.floor(process.uptime()),
       timestamp: new Date().toISOString()
     };
 
   }
 
+
   /**
-   * Health endpoint
-   * Used for load balancers, uptime monitoring
+   * HEALTH ENDPOINT
+   * Used by Render, load balancers, uptime monitors
+   * Accessible at: /health
    */
   @Get('health')
   health(): object {
 
     return {
       status: "healthy",
-      uptime: process.uptime(),
-      memory: process.memoryUsage(),
+      uptimeSeconds: Math.floor(process.uptime()),
+      memoryUsage: process.memoryUsage(),
+      cpuUsage: process.cpuUsage(),
       timestamp: new Date().toISOString()
     };
 
   }
 
+
   /**
-   * Ready endpoint
-   * Used to verify system ready for benchmarking
+   * READY ENDPOINT
+   * Used to verify system readiness and provider integration
+   * Accessible at: /ready
    */
   @Get('ready')
   ready(): object {
 
     return {
       status: "ready",
-      aiStreaming: true,
-      judgeModel: true,
-      providers: {
-        groq: true,
-        openrouter: true,
-        gemini: false,     // adjust based on availability
-        openai: false      // adjust based on availability
+      services: {
+        streamingEngine: true,
+        scoringEngine: true,
+        rankingEngine: true,
+        accuracyJudge: true
       },
+      providers: {
+        groq: !!process.env.GROQ_API_KEY,
+        openrouter: !!process.env.OPENROUTER_API_KEY,
+        gemini: false,
+        openai: false
+      },
+      environment: process.env.NODE_ENV || "development",
+      timestamp: new Date().toISOString()
+    };
+
+  }
+
+
+  /**
+   * VERSION ENDPOINT
+   * Useful for debugging and production validation
+   * Accessible at: /version
+   */
+  @Get('version')
+  version(): object {
+
+    return {
+      name: "CompareAI Backend",
+      version: "2.0.0",
+      milestone: "Milestone 02",
+      features: [
+        "Streaming",
+        "Latency Measurement",
+        "Accuracy Scoring",
+        "Ranking System",
+        "Winner Detection",
+        "Failure Handling"
+      ],
       timestamp: new Date().toISOString()
     };
 
