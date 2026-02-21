@@ -19,7 +19,7 @@ z-index:2;
 /* ================= HEADER ================= */
 
 .title{
-font-size:42px;
+font-size:32px;
 font-weight:700;
 margin:18px 0 24px 0;
 font-family:Inter, sans-serif;
@@ -67,9 +67,12 @@ width:320px;
 min-width:320px;
 max-width:320px;
 
-height: auto;
-min-height: 420px;
-max-height: 72vh;
+/* FIXED PRODUCTION HEIGHT */
+height:620px;
+
+/* remove min/max height */
+min-height:unset;
+max-height:unset;
 
 background:#111827;
 
@@ -144,7 +147,7 @@ margin-bottom:10px;
 .modelName{
 
 font-weight:600;
-font-size:14px;
+font-size:13px;
 color:#f3f4f6;
 
 }
@@ -175,7 +178,7 @@ border-radius:8px;
 
 cursor:pointer;
 
-font-size:13px;
+font-size:12px;
 
 transition:.2s;
 
@@ -207,9 +210,8 @@ display: none;
 
 .markdown{
 
-font-size:14px;
-
-line-height:1.6;
+font-size:13px;
+line-height:1.5;
 
 color:#e5e7eb;
 
@@ -271,7 +273,7 @@ font-weight:600;
 
 color:#9ca3af;
 
-font-size:13px;
+font-size:12px;
 
 padding-bottom:6px;
 
@@ -751,7 +753,7 @@ transform 600ms cubic-bezier(.22,.61,.36,1);
 
   width: 48px;
 
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
 
   color: #e5e7eb;
