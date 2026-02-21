@@ -218,27 +218,33 @@ font-family:Inter, sans-serif;
 
 position:fixed;
 
-bottom:110px;
+bottom:95px;
 
 left:50%;
 
-transform:translateX(-50%) translateY(20px);
+transform:translateX(-50%);
 
-width:42%;
+width:34%;
+max-width:520px;
 
-background:#1f2937;
+background:rgba(31,41,55,0.72);
 
-border-radius:14px;
+backdrop-filter:blur(10px);
 
-padding:16px;
+border-radius:12px;
 
-box-shadow:0 0 20px rgba(0,0,0,.5);
+padding:10px 14px;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,0.35);
+
+border:1px solid rgba(255,255,255,0.06);
 
 z-index:50;
 
 opacity:0;
 
-transition:all .4s ease;
+transition:all .25s ease;
 
 }
 
@@ -262,13 +268,13 @@ border-collapse:collapse;
 
 .metricsTable th{
 
-font-weight:600;
+font-weight:500;
 
 color:#9ca3af;
 
-font-size:12px;
+font-size:11px;
 
-padding-bottom:6px;
+padding-bottom:4px;
 
 }
 
@@ -276,11 +282,22 @@ padding-bottom:6px;
 
 text-align:center;
 
-padding:4px 0;
+padding:2px 0;
 
-font-size:14px;
+font-size:12px;
 
 color:#e5e7eb;
+
+}
+.metricsTable tr{
+
+transition:background .15s ease;
+
+}
+
+.metricsTable tr:hover{
+
+background:rgba(255,255,255,0.04);
 
 }
 
