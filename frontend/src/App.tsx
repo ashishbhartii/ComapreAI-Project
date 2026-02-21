@@ -322,7 +322,7 @@ const winnerLockRef = useRef<ModelKey | null>(null);
   /* ================= FETCH ================= */
 
   const fetchModel = async (model: ModelKey) => {
-
+    console.log("Starting request for model:", model);
     setStatus(p => ({ ...p, [model]: "loading" }));
     setResponses(p => ({ ...p, [model]: "" }));
     /* FAIL SAFE */
@@ -356,6 +356,7 @@ setTimeout(() => {
           body: JSON.stringify({ prompt, model })
         }
       );
+      console.log("Response received for model:", model, res.status);
 
       if (!res.body) return;
 
@@ -368,7 +369,7 @@ setTimeout(() => {
 
         const { done, value } =
           await reader.read();
-
+        console.log("Chunk received:", model, done, value?.length);
         if (done) break;
 
         buffer += decoder.decode(value);
@@ -385,6 +386,7 @@ for (let i = 0; i < events.length - 1; i++) {
 
   try {
     event = JSON.parse(line);
+    console.log("Parsed event:", model, event);
   } catch {
     continue;
   }
@@ -394,7 +396,7 @@ for (let i = 0; i < events.length - 1; i++) {
   }
 
   if (event.type === "token") {
-
+    console.log("Token received:", model, event.token);
     setResponses(p => ({
       ...p,
       [model]: p[model] + event.token
@@ -403,7 +405,7 @@ for (let i = 0; i < events.length - 1; i++) {
   }
 
   if (event.type === "complete") {
-
+    console.log("Stream complete:", model, event);
     setShowMetrics(true);
 
     setMetrics(p => ({
