@@ -1,0 +1,1220 @@
+/* ================= PAGE ================= */
+
+.page{
+background:#0b1020;
+min-height:100vh;
+padding-bottom:180px;
+}
+
+.container{
+width:100%;
+max-width:1800px;
+margin:auto;
+padding:0 20px;
+position:relative;
+z-index:2;
+}
+
+/* ================= HEADER ================= */
+
+.title{
+font-size:42px;
+font-weight:700;
+margin:24px 0 64px 0;
+font-family:Inter, sans-serif;
+color:white;
+transition:margin 400ms ease;
+}
+
+/* ================= CARD GRID ================= */
+
+.cardGrid{
+
+display:flex;
+
+gap:20px;
+position:relative;
+z-index:1;
+padding:20px 20px; 
+
+overflow-x:auto;
+
+overflow-y:hidden;
+
+flex-wrap:nowrap;
+
+scroll-behavior:smooth;
+
+/* HIDE SCROLLBAR — ALL BROWSERS */
+
+scrollbar-width:none;           /* Firefox */
+
+-ms-overflow-style:none;        /* IE / Edge */
+
+}
+
+/* Chrome / Safari / Edge */
+.cardGrid::-webkit-scrollbar{
+display:none;
+}
+
+/* ================= CARD ================= */
+
+.card{
+
+min-width:380px;
+max-width:380px;
+position: relative;
+overflow:hidden; 
+height:620px;
+
+background:#111827;
+
+border-radius:14px;
+
+padding:16px;
+
+display:flex;
+
+flex-direction:column;
+
+flex-shrink:0;
+
+border:2px solid #1f2937;
+
+transition:all .25s ease;
+
+}
+
+/* SUCCESS */
+
+.card.success{
+
+box-shadow:
+    0 0 10px rgba(34,197,94,.18),
+    inset 0 0 4px rgba(34,197,94,.08);
+
+}
+
+/* FAILED / IDLE */
+
+/* FAILED */
+
+.card.failed {
+
+  border: 2px solid #ef4444; /* red */
+  opacity: 0.85;
+
+}
+
+/* IDLE */
+
+.card.idle {
+
+  border: 2px solid #374151 !important; /* grey */
+  opacity: 0.85;
+  box-shadow: none;
+
+}
+
+
+/* ================= CARD HEADER ================= */
+
+.cardHeader{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:10px;
+
+}
+
+.modelName{
+
+font-weight:600;
+
+font-size:16px;
+
+color:#f3f4f6;
+
+}
+
+.badge{
+
+margin-left:8px;
+
+font-size:13px;
+
+color:#9ca3af;
+
+}
+
+/* ================= COPY BUTTON ================= */
+
+.copyBtn{
+
+background:#2563eb;
+
+border:none;
+
+color:white;
+
+padding:6px 12px;
+
+border-radius:8px;
+
+cursor:pointer;
+
+font-size:13px;
+
+transition:.2s;
+
+}
+
+.copyBtn:hover{
+background:#1d4ed8;
+}
+
+/* ================= RESPONSE ================= */
+
+.responseBox{
+
+flex:1;
+
+overflow:auto;
+
+padding-right:4px;
+
+scrollbar-width:none;
+
+}
+
+.responseBox::-webkit-scrollbar{
+display:none;
+}
+
+.markdown{
+
+font-size:14px;
+
+line-height:1.6;
+
+color:#e5e7eb;
+
+font-family:Inter, sans-serif;
+
+}
+
+/* ================= METRICS PANEL ================= */
+
+.metricsPanel{
+
+position:fixed;
+
+bottom:110px;
+
+left:50%;
+
+transform:translateX(-50%) translateY(20px);
+
+width:50%;
+
+background:#1f2937;
+
+border-radius:14px;
+
+padding:16px;
+
+box-shadow:0 0 20px rgba(0,0,0,.5);
+
+z-index:50;
+
+opacity:0;
+
+transition:all .4s ease;
+
+}
+
+.metricsPanel.show{
+
+opacity:1;
+
+transform:translateX(-50%) translateY(0);
+
+}
+
+/* ================= METRICS TABLE ================= */
+
+.metricsTable{
+
+width:100%;
+
+border-collapse:collapse;
+
+}
+
+.metricsTable th{
+
+font-weight:600;
+
+color:#9ca3af;
+
+font-size:13px;
+
+padding-bottom:6px;
+
+}
+
+.metricsTable td{
+
+text-align:center;
+
+padding:4px 0;
+
+font-size:14px;
+
+color:#e5e7eb;
+
+}
+
+/* ================= SEARCH BAR ================= */
+
+.searchSticky{
+
+position:fixed;
+
+bottom:20px;
+
+left:50%;
+
+transform:translateX(-50%);
+
+width:60%;
+
+background:#111827;
+
+border-radius:28px;
+
+padding:12px 14px;
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+box-shadow:0 0 20px rgba(0,0,0,.6);
+
+}
+
+/* PLUS BUTTON */
+
+.plusBtn{
+
+width:36px;
+height:36px;
+
+border-radius:50%;
+
+background:#1f2937;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+cursor:pointer;
+
+font-size:20px;
+
+color:#e5e7eb;
+
+}
+
+/* TEXTAREA */
+
+.searchInput{
+
+flex:1;
+
+background:none;
+
+border:none;
+
+color:white;
+
+font-size:15px;
+
+resize:none;
+
+outline:none;
+
+font-family:Inter, sans-serif;
+
+min-height:24px;
+
+max-height:140px;
+
+overflow:auto;
+
+}
+
+/* VOICE BUTTON */
+
+.voiceBtn{
+
+width:36px;
+height:36px;
+
+border-radius:50%;
+
+background:#1f2937;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+cursor:pointer;
+
+color:#e5e7eb;
+
+}
+
+/* SEND BUTTON */
+
+.sendBtn{
+
+width:36px;
+height:36px;
+
+border-radius:50%;
+
+background:#2563eb;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+cursor:pointer;
+
+font-size:16px;
+
+color:white;
+
+transition:.2s;
+
+}
+
+.sendBtn:hover{
+background:#1d4ed8;
+}
+
+
+/* ================= JUDGE WINNER VISUAL ================= */
+
+/* overall winner (highest overallScore) */
+
+.card.winner{
+
+border-color:#22c55e !important;
+
+box-shadow:
+0 0 28px rgba(34,197,94,.65),
+0 0 50px rgba(34,197,94,.35),
+inset 0 0 14px rgba(34,197,94,.25);
+
+
+}
+
+/* crown glow */
+
+.card.winner .modelName{
+
+text-shadow:
+0 0 8px rgba(34,197,94,.6);
+
+}
+
+
+/* ================= SPEED TIER COLORS ================= */
+
+.card.fastest{
+
+border-color:#22c55e !important;
+
+}
+
+.card.fast{
+
+border-color:#4ade80 !important;
+
+}
+
+.card.average{
+
+border-color:#3b82f6 !important;
+
+}
+
+.card.slow{
+
+border-color:#f59e0b !important;
+
+}
+
+.card.slowest{
+
+border-color:#eab308 !important;
+
+}
+
+
+/* ================= ACCURACY INTENSITY ================= */
+
+.card.highAccuracy{
+
+box-shadow:
+0 0 22px rgba(34,197,94,.45),
+inset 0 0 10px rgba(34,197,94,.2);
+
+}
+
+.card.mediumAccuracy{
+
+box-shadow:
+0 0 18px rgba(59,130,246,.35);
+
+}
+
+.card.lowAccuracy{
+
+box-shadow:
+0 0 14px rgba(245,158,11,.35);
+
+}
+
+
+/* ================= METRICS ROW COLORS ================= */
+
+.metricsTable tr.success{
+
+background:rgba(34,197,94,.08);
+
+}
+
+.metricsTable tr.failed{
+
+opacity:.55;
+
+}
+
+
+/* ================= SMOOTH CARD ANIMATION ================= */
+
+.card{
+
+transition:
+
+transform 600ms cubic-bezier(.2,.8,.2,1),
+
+box-shadow .35s ease,
+
+border-color .35s ease;
+
+}
+
+
+/* ================= METRICS PANEL POLISH ================= */
+
+.metricsPanel{
+
+backdrop-filter:blur(10px);
+
+border:1px solid rgba(255,255,255,.05);
+
+}
+
+.card.winnerGlow{
+
+animation: winnerGlowAnim 4s ease forwards;
+
+}
+
+@keyframes winnerGlowAnim{
+
+0%{
+
+box-shadow:
+0 0 0 rgba(34,197,94,0);
+
+}
+
+30%{
+
+box-shadow:
+0 0 20px rgba(34,197,94,0.18),
+0 0 40px rgba(34,197,94,0.12),
+0 0 60px rgba(34,197,94,0.06);
+
+}
+
+60%{
+
+box-shadow:
+0 0 30px rgba(34,197,94,0.22),
+0 0 60px rgba(34,197,94,0.14),
+0 0 90px rgba(34,197,94,0.08);
+
+}
+
+100%{
+
+box-shadow:
+0 0 40px rgba(34,197,94,0.25),
+0 0 80px rgba(34,197,94,0.16),
+0 0 120px rgba(34,197,94,0.10);
+
+}
+
+}
+/* ================= WINNER PREP ================= */
+
+.card.winnerVisible {
+
+transform: translateY(14px) scale(1.01);
+
+transition:
+transform 500ms cubic-bezier(.22,.61,.36,1),
+box-shadow 600ms ease;
+
+}
+
+.card.winnerReturn {
+
+transform: translateY(-4px);
+
+transition:
+transform 600ms cubic-bezier(.22,.61,.36,1);
+
+}
+
+
+/* ================= WINNER GLOW ================= */
+
+.card.winnerGlow {
+
+  animation: winnerGlowBuild 2.5s ease forwards;
+
+}
+
+
+@keyframes winnerGlowBuild {
+
+  0% {
+
+    box-shadow:
+      0 0 0 rgba(34,197,94,0),
+      inset 0 0 0 rgba(34,197,94,0);
+
+  }
+
+  30% {
+
+    box-shadow:
+      0 0 12px rgba(34,197,94,.25),
+      inset 0 0 4px rgba(34,197,94,.15);
+
+  }
+
+  60% {
+
+    box-shadow:
+      0 0 22px rgba(34,197,94,.35),
+      inset 0 0 8px rgba(34,197,94,.2);
+
+  }
+
+  100% {
+
+    box-shadow:
+      0 0 32px rgba(34,197,94,.45),
+      inset 0 0 12px rgba(34,197,94,.25);
+
+  }
+
+}
+
+
+/* ================= NON WINNER DIM ================= */
+
+.card.success:not(.winnerGlow) {
+
+  opacity: 0.92;
+
+  transition: opacity 600ms ease;
+
+}
+
+
+/* ================= CROWN FADE ================= */
+
+.modelName span {
+
+  animation: crownFadeIn 800ms ease;
+
+}
+
+@keyframes crownFadeIn {
+
+  from {
+
+    opacity: 0;
+    transform: translateY(4px);
+
+  }
+
+  to {
+
+    opacity: 1;
+    transform: translateY(0);
+
+  }
+
+}
+
+/* ================= IDLE STATE FIX ================= */
+
+.card.idle {
+
+  border: 2px solid #374151; /* grey */
+
+  box-shadow: none;
+
+  opacity: 0.85;
+
+}
+
+
+/* ================= WINNER ELEVATION ================= */
+
+.card.winnerVisible {
+
+  transform: translateY(-4px);
+
+  transition:
+    transform 400ms ease,
+    box-shadow 600ms ease;
+
+}
+
+
+
+/* ================= WINNER GLOW (GRADUAL) ================= */
+
+.card.winnerGlow {
+
+  box-shadow:
+    0 0 18px rgba(34,197,94,0.25),
+    0 0 36px rgba(34,197,94,0.15);
+
+}
+
+
+
+/* ================= GLOW KEYFRAMES ================= */
+
+
+
+.scoreRow {
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-top: 8px;
+  margin-bottom: 8px;
+
+}
+
+.scoreValue {
+
+  width: 48px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  color: #e5e7eb;
+
+}
+
+.scoreBarContainer {
+
+  flex: 1;
+
+  height: 6px;
+
+  background: #1f2937;
+
+  border-radius: 999px;
+
+  overflow: hidden;
+
+}
+
+.scoreBarFill {
+
+  height: 100%;
+
+  width: 0%;
+
+  border-radius: 999px;
+
+  height: 100%;
+  border-radius: 6px;
+
+}
+
+
+/* ================= RANK BADGE ================= */
+
+.rankBadge{
+
+background:#0f172a;
+
+color:#22c55e;
+
+font-size:13px;
+
+font-weight:600;
+
+padding:4px 8px;
+
+border-radius:6px;
+
+margin-right:8px;
+
+border:1px solid rgba(34,197,94,.35);
+
+}
+
+/* ================= WINNER SPOTLIGHT (ATTACHED STYLE) ================= */
+
+.winnerSpotlight{
+
+position:absolute;
+
+top:-18px;
+
+left:50%;
+
+transform:translateX(-50%);
+
+width:88%;
+
+z-index:60;
+
+pointer-events:none;
+
+animation:spotlightFadeSlide 0.45s cubic-bezier(.22,.61,.36,1);
+
+}
+
+.winnerSpotlightCard{
+
+background:
+linear-gradient(
+180deg,
+rgba(34,197,94,0.18),
+rgba(34,197,94,0.10)
+);
+
+border:1px solid rgba(34,197,94,0.35);
+
+color:#e5e7eb;
+
+padding:12px 16px;
+
+border-radius:12px;
+
+font-size:13px;
+
+font-weight:500;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,0.35),
+0 0 12px rgba(34,197,94,0.15);
+
+backdrop-filter:blur(8px);
+
+}
+
+/* content */
+
+.spotlightTitle{
+
+font-weight:600;
+
+margin-bottom:4px;
+
+color:#4ade80;
+
+}
+
+.spotlightModel{
+
+font-size:12px;
+
+opacity:0.95;
+
+margin-bottom:6px;
+
+}
+
+.spotlightMetrics{
+
+font-size:12px;
+
+line-height:1.5;
+
+opacity:0.9;
+
+}
+
+/* entry animation */
+
+@keyframes spotlightFadeSlide{
+
+from{
+
+opacity:0;
+
+transform:translateX(-50%) translateY(10px) scale(.96);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateX(-50%) translateY(0) scale(1);
+
+}
+
+}
+
+
+/* ================= WINNER REVEAL OVERLAY (CENTER CARD REVEAL) ================= */
+
+.winnerRevealOverlay {
+
+position:absolute;
+
+inset:0;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+background:rgba(15,23,42,0.65);
+
+backdrop-filter:blur(6px);
+
+border-radius:14px;
+
+z-index:80;
+
+animation:revealFadeIn 0.35s ease;
+
+}
+
+/* centered reveal panel */
+
+.winnerRevealCard {
+
+animation:
+revealScaleIn 0.35s cubic-bezier(.22,.61,.36,1),
+pulseWinner 2s ease 0.5s;
+
+  
+min-width:240px;
+position:relative;
+overflow:hidden;
+background:
+linear-gradient(
+180deg,
+rgba(34,197,94,0.22),
+rgba(34,197,94,0.12)
+);
+
+border:1px solid rgba(34,197,94,0.45);
+
+padding:20px 26px;
+
+border-radius:14px;
+
+text-align:center;
+
+box-shadow:
+0 20px 60px rgba(0,0,0,0.45),
+0 0 25px rgba(34,197,94,0.25);
+
+animation:revealScaleIn 0.35s cubic-bezier(.22,.61,.36,1);
+
+}
+
+
+@keyframes pulseWinner{
+0%,100%{ transform:scale(1); }
+50%{ transform:scale(1.03); }
+}
+/* title */
+
+.revealTitle {
+
+color:#4ade80;
+
+font-weight:600;
+
+font-size:16px;
+
+margin-bottom:6px;
+
+}
+
+/* model */
+
+.revealModel {
+
+font-size:14px;
+
+font-weight:500;
+
+margin-bottom:10px;
+
+color:#e5e7eb;
+
+}
+
+/* metrics */
+
+.revealMetrics {
+
+font-size:14px;
+
+line-height:1.7;
+
+/* brighter readable text */
+color:#f1f5f9;
+
+/* improve clarity */
+font-weight:500;
+
+/* improve contrast on green background */
+text-shadow:
+0 1px 2px rgba(0,0,0,0.6);
+
+}
+
+
+/* animations */
+
+@keyframes revealFadeIn {
+
+from { opacity:0; }
+
+to { opacity:1; }
+
+}
+
+@keyframes revealScaleIn {
+
+from {
+
+transform:scale(.92);
+
+opacity:0;
+
+}
+
+to {
+
+transform:scale(1);
+
+opacity:1;
+
+}
+
+}
+
+/* ================= BLADE SHINE SWEEP ================= */
+
+.winnerRevealCard::after{
+
+content:"";
+
+position:absolute;
+
+top:0;
+left:-120%;
+
+width:60%;
+height:100%;
+
+background:linear-gradient(
+120deg,
+transparent,
+rgba(255,255,255,0.25),
+transparent
+);
+
+transform:skewX(-25deg);
+
+animation:bladeSweep 2s ease;
+
+}
+
+@keyframes bladeSweep{
+
+0%{
+left:-120%;
+}
+
+100%{
+left:140%;
+}
+
+}
+
+/* ================= GLOBAL REVEAL BLUR ================= */
+
+.card.globalBlur {
+
+filter: blur(2px);
+
+opacity: 0.75;
+
+transform: scale(0.995);
+
+transition:
+filter 200ms ease,
+opacity 200ms ease,
+transform 200ms ease;
+
+}
+
+
+/* ensure reveal card stays sharp */
+
+.winnerSpotlight,
+.winnerSpotlightCard {
+
+filter: none !important;
+
+}
+
+/* ================= GLOBAL REVEAL BLUR ================= */
+
+.card.globalBlur {
+
+filter: blur(6px);
+
+opacity: 0.35;
+
+transform: scale(0.98);
+
+transition:
+filter 300ms ease,
+opacity 300ms ease,
+transform 300ms ease;
+
+}
+
+/* ================= WINNER REVEAL OVERLAY ================= */
+
+.winnerRevealOverlay {
+
+position:absolute;
+
+inset:0;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+background:rgba(15,23,42,0.65);
+backdrop-filter:none;
+
+border-radius:14px;
+
+z-index:100;
+
+animation: revealFadeIn 0.3s ease;
+
+}
+
+.winnerRevealCard {
+
+position:relative;
+
+background:
+linear-gradient(
+180deg,
+rgba(34,197,94,0.22),
+rgba(34,197,94,0.12)
+);
+
+border:1px solid rgba(34,197,94,0.45);
+
+padding:20px 26px;
+
+border-radius:14px;
+
+text-align:center;
+
+box-shadow:
+0 20px 60px rgba(0,0,0,0.45),
+0 0 25px rgba(34,197,94,0.25);
+
+animation: revealScaleIn 0.35s cubic-bezier(.22,.61,.36,1);
+
+}
+
+@keyframes revealFadeIn {
+
+from { opacity:0; }
+
+to { opacity:1; }
+
+}
+
+@keyframes revealScaleIn {
+
+from {
+
+transform:scale(.9);
+
+opacity:0;
+
+}
+
+to {
+
+transform:scale(1);
+
+opacity:1;
+
+}
+
+}
