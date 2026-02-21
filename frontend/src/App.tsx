@@ -1009,23 +1009,26 @@ ${globalRevealActive && winnerSpotlight !== model.key
 
           {/* Ends here */}
 
-          <div
-  className="responseBox"
-  style={{
-    maxHeight: "320px",
-    overflowY: "auto"
-  }}
->
+          {/* CARD BODY WRAPPER */}
+      <div className="cardBody">
 
-            {status[model.key] === "loading"
-              ? "Typing..."
-              :
+        <div className="responseBox">
+
+          {status[model.key] === "loading"
+            ? "Typing..."
+            :
+            <div className="markdown">
+
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {responses[model.key] || "Ready"}
               </ReactMarkdown>
-            }
 
-          </div>
+            </div>
+          }
+
+        </div>
+
+      </div>
 
         </div>
 
