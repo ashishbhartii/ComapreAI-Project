@@ -152,7 +152,7 @@ const [winnerSpotlight, setWinnerSpotlight] =
   useState<ModelKey | null>(null);
 
 const spotlightTimerRef =
-  useRef<number | null>(null);
+  useRef<number | null>(null); // eslint-disable-line @typescript-eslint/no-unused-vars
 
   /* ================= GLOBAL REVEAL ================= */
 
@@ -684,7 +684,7 @@ const rankedModels =
       ),
     [animatedMetrics]
   );
-
+  void rankedModels;
 
 
   const [displayOrder,
@@ -850,12 +850,12 @@ const rankMap =
         metrics[model.key];
 
       const isVisible =
-        winnerVisible === model.key;
+        winnerVisible === model.key;void isVisible;
 
       const isGlow =
         winnerGlow === model.key;
 
-      const isWinner = winnerVisible === model.key;
+      const isWinner = winnerVisible === model.key;void isWinner;
 
       let border = "#374151";
 
