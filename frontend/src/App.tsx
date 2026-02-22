@@ -1139,17 +1139,13 @@ ${globalRevealActive && winnerSpotlight !== model.key
 
       )}
 
-      <div
-  className="searchSticky"
-  style={{
-    position: "fixed",
-    bottom: "20px",
-    left: "50%",
-    transform: "translateX(-50%)",
-    width: "min(900px, 92%)",
-    zIndex: 1000
-  }}
->
+      <div className="searchSticky" style={{
+            position: "fixed",
+            bottom: "20px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "min(900px, 92%)",
+            zIndex: 1000 }} >
 
         <div className="plusBtn" onClick={() => setMobileMenuOpen(prev => !prev)}>+</div>
 
