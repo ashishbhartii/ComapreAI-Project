@@ -146,6 +146,9 @@ export default function App() {
   const [winnerGlow, setWinnerGlow] =
     useState<ModelKey | null>(null);
   
+  const [mobileMenuOpen, setMobileMenuOpen] = 
+    useState(false);
+
 /* ================= WINNER SPOTLIGHT ================= */
 
 const [winnerSpotlight, setWinnerSpotlight] =
@@ -1148,7 +1151,7 @@ ${globalRevealActive && winnerSpotlight !== model.key
   }}
 >
 
-        <div className="plusBtn">+</div>
+        <div className="plusBtn" onClick={() => setMobileMenuOpen(prev => !prev)}>+</div>
 
         <textarea
           ref={textareaRef}

@@ -1256,33 +1256,83 @@ width:34%;
 max-width:520px;
 }
 
-/* ================= MOBILE METRICS SHEET ================= */
+/* ================= MOBILE METRICS + SEARCH CLEAN LAYOUT ================= */
+/* ================= MOBILE ACTION MENU ================= */
+
+.mobileMenu{
+
+  position:absolute;
+  bottom:70px;
+  left:0;
+
+  background:#1f2937;
+
+  border-radius:12px;
+
+  padding:8px;
+
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
+
+  animation:fadeUp .2s ease;
+
+  z-index:2000;
+}
+
+.mobileMenuItem{
+
+  padding:8px 14px;
+
+  color:#e5e7eb;
+
+  font-size:13px;
+
+  cursor:pointer;
+
+  border-radius:8px;
+}
+
+.mobileMenuItem:hover{
+  background:#374151;
+}
+
+@keyframes fadeUp{
+  from{ opacity:0; transform:translateY(8px); }
+  to{ opacity:1; transform:translateY(0); }
+}
 
 @media (max-width: 768px){
+
+  /* ===== METRICS SHEET ===== */
 
   .metricsPanel,
   .metricsPanel.show{
 
     position:fixed !important;
 
-    left:0 !important;
-    right:0 !important;
-    bottom:0 !important;
+    left:12px !important;
+    right:12px !important;
+
+    bottom:90px !important;
 
     transform:none !important;
 
-    width:100% !important;
+    width:auto !important;
     max-width:none !important;
 
-    border-radius:18px 18px 0 0 !important;
+    border-radius:16px !important;
 
-    padding:16px !important;
+    padding:14px !important;
 
     background:rgba(15,23,42,0.98) !important;
 
     box-shadow:
-      0 -15px 50px rgba(0,0,0,0.6) !important;
+      0 12px 40px rgba(0,0,0,0.55) !important;
 
+    max-height:220px;
+    overflow-y:auto;
+    overflow-x:auto;
+
+    backdrop-filter:blur(12px);
   }
 
   .metricsTable{
@@ -1295,54 +1345,15 @@ max-width:520px;
 
   .metricsTable td{
     font-size:11px;
-    padding:4px 0;
+    padding:3px 0;
   }
 
-}
-
-@media (max-width: 768px){
-  .metricsPanel{
-    overflow-x:auto;
+  .voiceBtn{
+    display:none !important;
   }
-}
 
-/* ================= STATS PILL ================= */
-
-.statsPill{
-
-display:flex;
-align-items:center;
-gap:8px;
-
-padding:8px 14px;
-
-border-radius:999px;
-
-background:rgba(255,255,255,0.05);
-border:1px solid rgba(255,255,255,0.08);
-
-color:#e5e7eb;
-font-size:13px;
-
-cursor:pointer;
-
-transition:all .2s ease;
-
-}
-
-.statsPill:hover{
-background:rgba(255,255,255,0.08);
-}
-
-.statsDot{
-
-width:8px;
-height:8px;
-
-border-radius:50%;
-background:#22c55e;
-
-box-shadow:
-0 0 6px rgba(34,197,94,.6);
+  .statsPill{
+    display:none !important;
+  }
 
 }
