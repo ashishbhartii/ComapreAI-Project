@@ -48,7 +48,7 @@ const primaryModels: Model[] = [
   { key: "minimax", label: "MiniMax M2.5" }
 ];
 
-
+console.log("ALL ENV:", import.meta.env);
 const secondaryModels: Model[] = [
   { key: "gemini", label: "Google Gemini" },
   { key: "openai", label: "OpenAI GPT-4" }
@@ -351,8 +351,8 @@ setTimeout(() => {
 
     try {
 
-      const res = await fetch(
-        "https://compareai-backend.onrender.com/ai/query-stream",
+      const API_URL = import.meta.env.VITE_API_URL;
+      const res = await fetch(`${API_URL}/ai/query-stream`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -1059,7 +1059,7 @@ ${globalRevealActive && winnerSpotlight !== model.key
   }}
 >
 
-        <h1 className="title">
+        <h1 className="logo-blade">
           CompareAI
         </h1>
 

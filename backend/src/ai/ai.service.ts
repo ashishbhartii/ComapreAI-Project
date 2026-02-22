@@ -4,8 +4,13 @@ import { httpClient } from "../common/http-client";
 @Injectable()
 export class AiService {
 
-  private groqKey = process.env.GROQ_API_KEY;
-  private openrouterKey = process.env.OPENROUTER_API_KEY;
+private get groqKey(): string {
+  return process.env.GROQ_API_KEY || "";
+}
+
+private get openrouterKey(): string {
+  return process.env.OPENROUTER_API_KEY || "";
+}
 
 
   /* =========================================================
@@ -404,7 +409,7 @@ export class AiService {
   model: string,
   onToken: (token: string) => void
 ): Promise<void> {
-
+  console.log("OPENROUTER KEY VALUE:", this.openrouterKey);
   const response = await fetch(
     "https://openrouter.ai/api/v1/chat/completions",
     {
