@@ -1174,7 +1174,7 @@ ${globalRevealActive && winnerSpotlight !== model.key
         />
 
         <div className="voiceBtn">🎤</div>
-        <div className="statsBtn" onClick={() => setShowMetrics(true)}> 📊 </div>
+        <div className="statsBtn" onClick={() => setShowMetrics(true)}> stats </div>
         <div
           className="sendBtn"
           onClick={search}

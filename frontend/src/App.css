@@ -1255,3 +1255,54 @@ color:#e5e7eb;
 width:34%;
 max-width:520px;
 }
+
+/* ================= MOBILE METRICS FIX ================= */
+
+@media (max-width: 768px){
+
+  .metricsPanel{
+
+    left:0;
+    right:0;
+    bottom:0;
+
+    transform:none;
+
+    width:100%;
+    max-width:none;
+
+    border-radius:18px 18px 0 0;
+
+    padding:14px 16px;
+
+    background:rgba(15,23,42,0.96);
+
+    box-shadow:
+      0 -10px 40px rgba(0,0,0,0.5);
+
+  }
+
+  .metricsHeader{
+    font-size:13px;
+  }
+
+  .metricsTable{
+    font-size:11px;
+  }
+
+  .metricsTable th{
+    font-size:10px;
+  }
+
+  .metricsTable td{
+    font-size:11px;
+    padding:3px 0;
+  }
+
+}
+
+@media (max-width: 768px){
+  .metricsPanel{
+    overflow-x:auto;
+  }
+}
