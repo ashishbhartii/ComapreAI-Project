@@ -1078,7 +1078,10 @@ ${globalRevealActive && winnerSpotlight !== model.key
       {showMetrics && (
 
         <div className="metricsPanel show">
-
+          <div className="metricsHeader">
+              <span>Performance Stats</span>
+              <button onClick={() => setShowMetrics(false)}>✕</button>
+          </div>
           <table className="metricsTable">
 
             <thead>
@@ -1171,7 +1174,7 @@ ${globalRevealActive && winnerSpotlight !== model.key
         />
 
         <div className="voiceBtn">🎤</div>
-
+        <div className="statsBtn" onClick={() => setShowMetrics(true)}> 📊 </div>
         <div
           className="sendBtn"
           onClick={search}
