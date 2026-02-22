@@ -5,12 +5,18 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-  origin: [
-    "http://localhost:5174", // local dev
-    "https://comapre-ai-project-fs3xsk2xd-ashishbhartiis-projects.vercel.app", // vercel prod
-  ],
-  methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true); // allow non-browser requests
+
+    if (
+      origin.includes("vercel.app") ||
+      origin.includes("localhost")
+    ) {
+      return callback(null, true);
+    }
+
+    return callback(new Error("Not allowed by CORS"));
+  },
   credentials: true,
 });
 
