@@ -1256,34 +1256,33 @@ width:34%;
 max-width:520px;
 }
 
-/* ================= MOBILE METRICS FIX ================= */
+/* ================= MOBILE METRICS SHEET ================= */
 
 @media (max-width: 768px){
 
-  .metricsPanel{
+  .metricsPanel,
+  .metricsPanel.show{
 
-    left:0;
-    right:0;
-    bottom:0;
+    position:fixed !important;
 
-    transform:none;
+    left:0 !important;
+    right:0 !important;
+    bottom:0 !important;
 
-    width:100%;
-    max-width:none;
+    transform:none !important;
 
-    border-radius:18px 18px 0 0;
+    width:100% !important;
+    max-width:none !important;
 
-    padding:14px 16px;
+    border-radius:18px 18px 0 0 !important;
 
-    background:rgba(15,23,42,0.96);
+    padding:16px !important;
+
+    background:rgba(15,23,42,0.98) !important;
 
     box-shadow:
-      0 -10px 40px rgba(0,0,0,0.5);
+      0 -15px 50px rgba(0,0,0,0.6) !important;
 
-  }
-
-  .metricsHeader{
-    font-size:13px;
   }
 
   .metricsTable{
@@ -1296,7 +1295,7 @@ max-width:520px;
 
   .metricsTable td{
     font-size:11px;
-    padding:3px 0;
+    padding:4px 0;
   }
 
 }
@@ -1305,4 +1304,45 @@ max-width:520px;
   .metricsPanel{
     overflow-x:auto;
   }
+}
+
+/* ================= STATS PILL ================= */
+
+.statsPill{
+
+display:flex;
+align-items:center;
+gap:8px;
+
+padding:8px 14px;
+
+border-radius:999px;
+
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.08);
+
+color:#e5e7eb;
+font-size:13px;
+
+cursor:pointer;
+
+transition:all .2s ease;
+
+}
+
+.statsPill:hover{
+background:rgba(255,255,255,0.08);
+}
+
+.statsDot{
+
+width:8px;
+height:8px;
+
+border-radius:50%;
+background:#22c55e;
+
+box-shadow:
+0 0 6px rgba(34,197,94,.6);
+
 }
