@@ -1139,52 +1139,70 @@ ${globalRevealActive && winnerSpotlight !== model.key
 
       )}
 
-      <div className="searchSticky" style={{
+      <div
+          className="searchSticky"
+          style={{
             position: "fixed",
             bottom: "20px",
             left: "50%",
             transform: "translateX(-50%)",
             width: "min(900px, 92%)",
-            zIndex: 1000 }} >
+            zIndex: 1000
+          }}>
 
-        <div className="plusBtn" onClick={() => setMobileMenuOpen(prev => !prev)}>+</div>
+          <div
+            className="plusBtn"
+            onClick={() => setMobileMenuOpen(prev => !prev)}
+          >
+            +
+          </div>
 
-        <textarea
-          ref={textareaRef}
-          className="searchInput"
-          value={prompt}
-          placeholder="Ask anything..."
-          onChange={e =>
-            setPrompt(e.target.value)
-          }
-          onKeyDown={e => {
+          <textarea
+            ref={textareaRef}
+            className="searchInput"
+            value={prompt}
+            placeholder="Ask anything..."
+            onChange={e => setPrompt(e.target.value)}
+            onKeyDown={e => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                search();
+              }
+            }}/>
 
-            if (
-              e.key === "Enter" &&
-              !e.shiftKey
-            ) {
+  <div className="voiceBtn">🎤</div>
 
-              e.preventDefault();
-              search();
+  <div
+    className="statsPill"
+    onClick={() => setShowMetrics(true)}
+  >
+    <span className="statsDot"></span>
+    <span>Stats</span>
+  </div>
 
-            }
+  <div
+    className="sendBtn"
+    onClick={search}
+  >
+    ↑
+  </div>
 
-          }}
-        />
-
-        <div className="voiceBtn">🎤</div>
-        <div className="statsPill" onClick={() => setShowMetrics(true)}>
-            <span className="statsDot"></span>
-            <span>Stats</span>
-        </div>
-        <div
-          className="sendBtn"
-          onClick={search}
-        >
-          ↑
-        </div>
-
+  {/* 🔥 ADD THIS BLOCK */}
+  {mobileMenuOpen && (
+    <div className="mobileMenu">
+      <div
+        className="mobileMenuItem"
+        onClick={() => {
+          setShowMetrics(true);
+          setMobileMenuOpen(false);
+        }}
+      >
+        📊 View Stats
       </div>
+    </div>
+  )}
+
+</div>
 
     </div>
 
