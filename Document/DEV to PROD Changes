@@ -1,0 +1,202 @@
+✅ COMPLETE DEV vs PROD CHANGE LOG
+
+Below is everything that changed to make DEV run locally without breaking PROD.
+
+1️⃣ app.module.ts — Environment Loader Change
+🔴 PROD
+
+Likely:
+
+ConfigModule.forRoot({
+  isGlobal: true,
+});
+
+This loads only .env.
+
+🟢 DEV
+
+Changed to:
+
+ConfigModule.forRoot({
+  isGlobal: true,
+  envFilePath: '.env.development',
+});
+🎯 Why?
+
+To force Nest to load .env.development
+
+Without this, OPENROUTER_API_KEY was empty
+
+Caused 401 Missing Authentication header
+
+🔒 Merge Safety
+
+Safe.
+In production, you will switch back to:
+
+envFilePath: '.env'
+
+or better:
+
+envFilePath: process.env.NODE_ENV === 'production'
+  ? '.env'
+  : '.env.development'
+2️⃣ main.ts — CORS Changes
+
+This is important.
+
+🔴 PROD (Earlier Version)
+
+CORS was manually hardcoded with allowedOrigins array and fallback allowing everything.
+
+🟢 DEV
+
+You modified CORS to work with:
+
+http://localhost:5174
+
+Proper dev origin matching
+
+Removed hardcoded production domain logic
+
+Example adjustment:
+
+app.enableCors({
+  origin: process.env.FRONTEND_URL,
+  credentials: true,
+});
+
+Or similar environment-driven logic.
+
+🎯 Why?
+
+Local frontend runs on 5174
+
+Browser blocked preflight request
+
+Caused CORS error
+
+🔒 Merge Safety
+
+Not dangerous.
+Production must set:
+
+FRONTEND_URL=https://your-vercel-domain.vercel.app
+
+So behavior remains correct.
+
+3️⃣ ai.service.ts — API Key Handling Change
+🔴 PROD
+private groqKey = process.env.GROQ_API_KEY;
+private openrouterKey = process.env.OPENROUTER_API_KEY;
+
+Problem:
+Env captured at class load.
+If undefined once → permanently undefined.
+
+🟢 DEV
+
+Replaced with getters:
+
+private get groqKey(): string {
+  return process.env.GROQ_API_KEY || "";
+}
+
+private get openrouterKey(): string {
+  return process.env.OPENROUTER_API_KEY || "";
+}
+🎯 Why?
+
+OPENROUTER_API_KEY was empty
+
+Caused 401
+
+Now reads dynamically
+
+🔒 Merge Safety
+
+Very safe.
+Production already has env variables set.
+This improves reliability.
+
+4️⃣ app.service.ts
+
+No major structural change.
+Likely untouched.
+
+If modified:
+Only environment compatibility or logging changes.
+No business logic altered.
+
+Low risk.
+
+5️⃣ App.tsx (Frontend) — API URL Refactor
+🔴 PROD
+
+Hardcoded:
+
+fetch("https://your-render-url.onrender.com/ai/query-stream")
+🟢 DEV
+
+Changed to:
+
+const API_URL = import.meta.env.VITE_API_URL;
+fetch(`${API_URL}/ai/query-stream`)
+🎯 Why?
+
+Allows switching between:
+
+Local backend
+
+Render backend
+
+Future cloud backend
+
+Required for SaaS architecture
+
+🔒 Merge Safety
+
+Safe if production Vercel has:
+
+VITE_API_URL=https://compareai-backend.onrender.com
+6️⃣ Backend Port Change
+🟢 DEV
+const port = process.env.PORT || 4000;
+
+Production uses Render-provided process.env.PORT.
+
+Safe.
+No production risk.
+
+7️⃣ .env Separation
+
+Now you have:
+
+.env
+.env.development
+
+DEV explicitly loads .env.development.
+
+Production still loads .env.
+
+Architecturally correct.
+
+8️⃣ Temporary Debug Logs
+
+You added:
+
+console.log("OPENROUTER KEY VALUE:", this.openrouterKey);
+
+This should be removed before merging.
+
+🔥 Real Difference Summary
+File	Changed	Risk
+app.module.ts	Yes	Low
+main.ts (CORS)	Yes	Low
+ai.service.ts	Yes	Very Low
+App.tsx	Yes	Low
+app.service.ts	Minor/None	Very Low
+Business Logic	No	None
+Streaming Logic	No	None
+Controller Routes	No	None
+UI Logic	No	None
