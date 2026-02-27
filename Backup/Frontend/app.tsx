@@ -37,6 +37,11 @@ type Metrics = {
   accuracy: number;
   overallScore: number;
   speedTier: string;
+
+  estimatedCost?: number;
+  inputTokens?: number;
+  outputTokens?: number;
+  totalTokens?: number;
 };
 
 /* ================= MODELS ================= */
@@ -48,7 +53,7 @@ const primaryModels: Model[] = [
   { key: "minimax", label: "MiniMax M2.5" }
 ];
 
-
+console.log("ALL ENV:", import.meta.env);
 const secondaryModels: Model[] = [
   { key: "gemini", label: "Google Gemini" },
   { key: "openai", label: "OpenAI GPT-4" }
@@ -139,20 +144,20 @@ export default function App() {
 
   const [showMetrics, setShowMetrics] =
     useState(false);
-
+  const [advancedMode, setAdvancedMode] = useState(false);
   const [winnerVisible, setWinnerVisible] =
     useState<ModelKey | null>(null);
 
   const [winnerGlow, setWinnerGlow] =
     useState<ModelKey | null>(null);
   
+  const [mobileMenuOpen, setMobileMenuOpen] = 
+    useState(false);
+
 /* ================= WINNER SPOTLIGHT ================= */
 
 const [winnerSpotlight, setWinnerSpotlight] =
   useState<ModelKey | null>(null);
-
-const spotlightTimerRef =
-  useRef<number | null>(null);
 
   /* ================= GLOBAL REVEAL ================= */
 
@@ -321,129 +326,151 @@ const winnerLockRef = useRef<ModelKey | null>(null);
 
   /* ================= FETCH ================= */
 
-  const fetchModel = async (model: ModelKey) => {
 
-    setStatus(p => ({ ...p, [model]: "loading" }));
-    setResponses(p => ({ ...p, [model]: "" }));
-    /* FAIL SAFE */
+  const fetchCompare = async () => {
 
-setTimeout(() => {
+  try {
 
-  setStatus(p => {
+    const API_URL = import.meta.env.VITE_API_URL;
+    const selectedModels = allModels.map(m => m.key);
 
-    if (p[model] === "loading") {
+    const res = await fetch(`${API_URL}/ai/compare`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        prompt,
+        models: selectedModels
+      })
+    });
 
-      return {
-        ...p,
-        [model]: "failed"
-      };
+    if (!res.ok) {
+      console.error("Compare request failed:", res.status);
 
+      if (res.status === 429) {
+        alert("Too many requests. Please wait a moment.");
+      }
+
+      return;
     }
 
-    return p;
+    if (!res.body) return;
 
-  });
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
 
-}, 30000);
+    let buffer = "";
 
-    try {
+    while (true) {
 
-      const res = await fetch(
-        "http://localhost:3001/ai/query-stream",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt, model })
-        }
-      );
+      const { done, value } = await reader.read();
+      if (done) break;
 
-      if (!res.body) return;
+      buffer += decoder.decode(value);
 
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
+      const events = buffer.split("\n");
 
-      let buffer = "";
+      for (let i = 0; i < events.length - 1; i++) {
 
-      while (true) {
+        const line = events[i].trim();
+        if (!line) continue;
 
-        const { done, value } =
-          await reader.read();
-
-        if (done) break;
-
-        buffer += decoder.decode(value);
-
-        const events = buffer.split("\n");
-
-        for (let i = 0; i < events.length - 1; i++) {
-
-          const event =
-            JSON.parse(events[i]);
-
-          if (event.type === "token") {
-
-            setResponses(p => ({
-              ...p,
-              [model]: p[model] + event.token
-            }));
-
-          }
-
-          if (event.type === "complete") {
-
-            setShowMetrics(true);
-
-            setMetrics(p => ({
-              ...p,
-              [model]: {
-                latency: event.latency || 0,
-                length: event.length || 0,
-                accuracy: event.accuracy || 0,
-                overallScore: event.overallScore || 0,
-                speedTier: event.speedTier || "failed"
-              }
-            }));
-
-            setStatus(p => ({
-              ...p,
-              [model]: event.success ? "success" : "failed"
-            }));
-          }
-
+        let event;
+        try {
+          event = JSON.parse(line);
+        } catch {
+          continue;
         }
 
-        buffer = events[events.length - 1];
+        if (event.type === "model-start") {
+          const model = event.model as ModelKey;
+          setStatus(p => ({ ...p, [model]: "loading" }));
+        }
+
+        if (event.type === "model-token") {
+          const model = event.model as ModelKey;
+          setResponses(p => ({
+            ...p,
+            [model]: p[model] + event.token
+          }));
+        }
+
+        if (event.type === "model-complete") {
+          const model = event.model as ModelKey;
+
+          setMetrics(p => ({
+            ...p,
+            [model]: {
+              latency: event.latency || 0,
+              length: event.length || 0,
+              accuracy: event.accuracy || 0,
+              overallScore: event.overallScore || 0,
+              speedTier: event.speedTier || "failed",
+
+              // 🔥 ADD THESE:
+              estimatedCost: event.estimatedCost || 0,
+              inputTokens: event.inputTokens || 0,
+              outputTokens: event.outputTokens || 0,
+              totalTokens: event.totalTokens || 0
+            }
+          }));
+
+          setStatus(p => ({
+            ...p,
+            [model]: event.success ? "success" : "failed"
+          }));
+
+          setShowMetrics(true);
+        }
+
+        if (event.type === "model-error") {
+          const model = event.model as ModelKey;
+
+          setStatus(p => ({
+            ...p,
+            [model]: "failed"
+          }));
+        }
 
       }
 
-    }
-    catch {
-
-      setStatus(p => ({
-        ...p,
-        [model]: "failed"
-      }));
-
+      buffer = events[events.length - 1];
     }
 
-  };
+  } catch (err) {
+
+    console.error("Compare crashed:", err);
+
+    // Fail all loading models
+    setStatus(prev => {
+      const updated = { ...prev };
+      Object.keys(updated).forEach(k => {
+        if (updated[k as ModelKey] === "loading") {
+          updated[k as ModelKey] = "failed";
+        }
+      });
+      return updated;
+    });
+
+  }
+
+};
 
   /* ================= SEARCH ================= */
 
   const search = () => {
 
   if (!prompt.trim()) return;
+     // Prevent spamming while loading
+  const isLoading = Object.values(status).some(s => s === "loading");
+  if (isLoading) return;
 
   revealStartedRef.current = false;
   winnerLockRef.current = null;
-  setStatus({
-  groq: "idle",
-  aurora: "idle",
-  glm: "idle",
-  minimax: "idle",
-  gemini: "idle",
-  openai: "idle"
-});
+  setStatus(
+  Object.fromEntries(
+    allModels.map(m => [m.key, "idle"])
+  ) as Record<ModelKey, Status>
+);
 
   setShowMetrics(false);
 
@@ -470,9 +497,7 @@ setTimeout(() => {
   openai: ""
 });
 
-  allModels.forEach(m =>
-    fetchModel(m.key)
-  );
+  fetchCompare();
 
 };
 
@@ -509,16 +534,52 @@ setTimeout(() => {
 
 // }, [winnerVisible]);
 
+  /* ================= VALUE SCORE ================= */
 
+        const valueMap = useMemo(() => {
+        const map = {} as Record<ModelKey, number>;
+
+        allModels.forEach(m => {
+          const score = metrics[m.key].overallScore;
+          const cost = metrics[m.key].estimatedCost || 0;
+
+          if (cost > 0) {
+            // Normalize to per $0.001
+            map[m.key] = score / (cost * 1000);
+          } else {
+            map[m.key] = 0;
+          }
+        });
+
+        return map;
+      }, [metrics]);
+
+        const bestValueModel = useMemo(() => {
+          const candidates = primaryModels.filter(
+            m =>
+              status[m.key] === "success" &&
+              valueMap[m.key] > 0
+          );
+
+          if (!candidates.length) return null;
+
+          return candidates.sort(
+            (a, b) =>
+              valueMap[b.key] - valueMap[a.key]
+          )[0].key;
+
+        }, [valueMap, status]);
   /* ================= LIVE WINNER CALC (uses animated score) ================= */
 
   const winnerModel =
     useMemo(() => {
 
+      // ================= VALUE SCORE =================
+
       const success =
-  primaryModels.filter(
-    m => status[m.key] === "success" && metrics[m.key].overallScore > 0
-  );
+        primaryModels.filter(
+          m => status[m.key] === "success" && animatedMetrics[m.key].overallScore > 0
+        );
 
 
       if (!success.length)
@@ -530,7 +591,7 @@ setTimeout(() => {
           animatedMetrics[a.key].overallScore
       )[0].key;
 
-    }, [animatedMetrics, status, metrics]);
+    }, [animatedMetrics, status]);
 
 
 /* ================= LIVE CROWN TRANSFER + AUTO CENTER (LOCKED WINNER) ================= */
@@ -684,7 +745,7 @@ const rankedModels =
       ),
     [animatedMetrics]
   );
-
+  void rankedModels;
 
 
   const [displayOrder,
@@ -850,12 +911,12 @@ const rankMap =
         metrics[model.key];
 
       const isVisible =
-        winnerVisible === model.key;
+        winnerVisible === model.key;void isVisible;
 
       const isGlow =
         winnerGlow === model.key;
 
-      const isWinner = winnerVisible === model.key;
+      const isWinner = winnerVisible === model.key;void isWinner;
 
       let border = "#374151";
 
@@ -871,40 +932,38 @@ const rankMap =
       return (
 
         <div
-  key={model.key}
+          key={model.key}
 
-  ref={el => {
-    if (el)
-      cardRefs.current[model.key] = el;
-  }}
-
-
-
-className={`card
-${status[model.key]}
-${winnerVisible === model.key ? "winnerVisible" : ""}
-${winnerGlow === model.key ? "winnerGlow" : ""}
-${globalRevealActive && winnerSpotlight !== model.key
-  ? "globalBlur"
-  : ""}
+        ref={el => {
+          if (el)
+            cardRefs.current[model.key] = el;
+        }}
 
 
-`}
+
+        className={`card
+        ${status[model.key]}
+        ${winnerVisible === model.key ? "winnerVisible" : ""}
+        ${winnerGlow === model.key ? "winnerGlow" : ""}
+        ${globalRevealActive && winnerSpotlight !== model.key
+          ? "globalBlur"
+          : ""}
+        `}
 
 
 
 
 
-  style={{
-    borderColor: border
-  }}
+        style={{
+          borderColor: border
+        }}
 >
 
 
           <div className="cardHeader">
               <div className="rankBadge">
-    #{rankMap[model.key]}
-  </div>
+            #{rankMap[model.key]}
+          </div>
             <div className="modelName">
 
               {model.label}
@@ -918,6 +977,8 @@ ${globalRevealActive && winnerSpotlight !== model.key
                   : "—"}
 
               </span>
+               
+
 
             </div>
 
@@ -962,59 +1023,85 @@ ${globalRevealActive && winnerSpotlight !== model.key
           {/* Another test for response starts headers */}
 
           {winnerSpotlight === model.key && (
-  <div className="winnerRevealOverlay">
+            <div className="winnerRevealOverlay">
 
-    <div className="winnerRevealCard">
+              <div className="winnerRevealCard">
 
-      <div className="revealTitle">🏆 Best Response</div>
+                <div className="revealTitle">🏆 Best Response</div>
 
-      <div className="revealModel">{model.label}</div>
+                <div className="revealModel">{model.label}</div>
 
-      <div className="revealMetrics">
-        Score: {metrics[model.key].overallScore.toFixed(2)}<br/>
-        Accuracy: {metrics[model.key].accuracy.toFixed(1)}<br/>
-        Speed: {metrics[model.key].speedTier}<br/>
-        Latency: {Math.round(metrics[model.key].latency)} ms
-      </div>
+                <div className="revealMetrics">
+                  Score: {metrics[model.key].overallScore.toFixed(2)}<br/>
+                  Accuracy: {metrics[model.key].accuracy.toFixed(1)}<br/>
+                  Speed: {metrics[model.key].speedTier}<br/>
+                  Latency: {Math.round(metrics[model.key].latency)} ms
+                </div>
 
-    </div>
+              </div>
 
-  </div>
-)}
+            </div>
+          )}
 
-          {/* Ends here */}
+                    {/* Ends here */}
 
-          <div className="responseBox">
+                    {/* CARD BODY WRAPPER */}
+                <div className="cardBody">
 
-            {status[model.key] === "loading"
-              ? "Typing..."
-              :
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {responses[model.key] || "Ready"}
-              </ReactMarkdown>
-            }
+                  <div className="responseBox">
 
-          </div>
+                    {status[model.key] === "loading"
+                      ? "Typing..."
+                      :
+                      <div className="markdown">
 
-        </div>
+                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                          {responses[model.key] || "Ready"}
+                        </ReactMarkdown>
 
-      );
+                      </div>
+                    }
 
-    };
+                  </div>
 
-  /* ================= UI ================= */
+                </div>
 
-  return (
+                  </div>
 
-    <div className="page">
+                );
 
-      <div className="container">
+              };
 
-        <h1 className="title">
-          CompareAI
-        </h1>
+            /* ================= UI ================= */
 
-        <div className="cardGrid">
+            return (
+
+              <div className="page" style={{
+            height: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            overflow: "hidden"
+          }}>
+
+                <div
+            className="container"
+            style={{
+              flex: 1,
+              overflowY: "auto",
+              paddingBottom: "140px"
+            }}
+          >
+
+                  <h1 className="logo-blade">
+                    CompareAI
+                  </h1>
+
+                  <div
+            className="cardGrid"
+            style={{
+              alignItems: "start"
+            }}
+>
           {displayOrder.map(renderCard)}
         </div>
 
@@ -1026,54 +1113,138 @@ ${globalRevealActive && winnerSpotlight !== model.key
 
       {showMetrics && (
 
-        <div className="metricsPanel show">
+        <div
+            className="metricsPanel show"
+            style={{
+              width: advancedMode ? "820px" : "720px",
+              maxWidth: "95%",
+              padding: "18px 24px",
+              transition: "width 0.25s ease"
+            }}
+          >
+          <div className="metricsHeader" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <span style={{ fontWeight: 500 }}>Performance Stats</span>
 
-          <table className="metricsTable">
+              <span
+                onClick={() => setAdvancedMode(prev => !prev)}
+                style={{
+                  cursor: "pointer",
+                  fontWeight: 500,
+                  transition: "all 0.25s ease",
+                  color: advancedMode ? "#10b981" : "#3b82f6",
+                  textShadow: advancedMode
+                    ? "0 0 8px rgba(16,185,129,0.8)"
+                    : "0 0 8px rgba(59,130,246,0.8)"
+                }}
+              >
+                {advancedMode ? "Basic" : "Advanced"}
+              </span>
+
+              <div style={{ marginLeft: "auto" }}>
+                <button onClick={() => setShowMetrics(false)}>✕</button>
+              </div>
+            </div>
+
+
+            <table
+                className="metricsTable"
+                style={{
+                  width: "100%",
+                  margin: "0 auto",
+                  borderCollapse: "collapse"
+                }}
+              >
 
             <thead>
               <tr>
-                <th>Model</th>
-                <th>Latency</th>
-                <th>Accuracy</th>
-                <th>Score</th>
-                <th>Speed</th>
-                <th>Status</th>
+                <th style={{ padding: "6px 4px", textAlign: "left" }}>
+                  Model
+                </th>
+
+                <th style={{ padding: "6px 4px", textAlign: "center" }}>
+                  Latency
+                </th>
+
+                <th style={{ padding: "6px 4px", textAlign: "center" }}>
+                  Accuracy
+                </th>
+
+                <th style={{ padding: "6px 4px", textAlign: "center" }}>
+                  Score
+                </th>
+
+                {advancedMode && (
+                  <th style={{ padding: "6px 4px", textAlign: "center" }}>
+                    Tokens
+                  </th>
+                )}
+
+                {advancedMode && (
+                  <th style={{ padding: "6px 4px", textAlign: "center" }}>
+                    Est. Cost
+                  </th>
+                )}
+
+                <th style={{ padding: "6px 4px", textAlign: "center" }}>
+                  Speed
+                </th>
+
+                <th style={{ padding: "6px 4px", textAlign: "center" }}>
+                  Status
+                </th>
               </tr>
             </thead>
 
             <tbody>
-
               {displayOrder.map(m => (
-
                 <tr key={m.key}>
 
-                  <td>{m.label}</td>
-
-                  <td>
-                    {Math.round(animatedMetrics[m.key].latency) || "—"}
+                  <td style={{ padding: "6px 4px", textAlign: "left" }}>
+                    {m.label}
                   </td>
 
-                  <td>
+                  <td style={{ padding: "6px 4px", textAlign: "center" }}>
+                    {animatedMetrics[m.key].latency
+                      ? Math.round(animatedMetrics[m.key].latency)
+                      : "—"}
+                  </td>
+
+                  <td style={{ padding: "6px 4px", textAlign: "center" }}>
                     {animatedMetrics[m.key].accuracy.toFixed(1)}
                   </td>
 
-                  <td>
+                  <td style={{ padding: "6px 4px", textAlign: "center" }}>
                     {animatedMetrics[m.key].overallScore.toFixed(2)}
                   </td>
 
-                  <td style={{
-                    color:
-                      speedColor(metrics[m.key].speedTier)
-                  }}>
+                  {advancedMode && (
+                    <td style={{ padding: "6px 4px", textAlign: "center" }}>
+                      {metrics[m.key]?.totalTokens ?? "--"}
+                    </td>
+                  )}
+
+                  {advancedMode && (
+                    <td style={{ padding: "6px 4px", textAlign: "center" }}>
+                      ${(metrics[m.key]?.estimatedCost ?? 0).toFixed(6)}
+                    </td>
+                  )}
+
+                  <td
+                    style={{
+                      padding: "6px 4px",
+                      textAlign: "center",
+                      color: speedColor(metrics[m.key].speedTier)
+                    }}
+                  >
                     {metrics[m.key].speedTier}
                   </td>
 
-                  <td>{status[m.key]}</td>
+                  <td style={{ padding: "6px 4px", textAlign: "center" }}>
+                    {status[m.key]}
+                  </td>
 
                 </tr>
-
               ))}
-
             </tbody>
 
           </table>
@@ -1082,46 +1253,73 @@ ${globalRevealActive && winnerSpotlight !== model.key
 
       )}
 
-      <div className="searchSticky">
+      <div
+          className="searchSticky"
+          style={{
+            position: "fixed",
+            bottom: "20px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "min(900px, 92%)",
+            zIndex: 1000
+          }}>
 
-        <div className="plusBtn">+</div>
+          <div
+            className="plusBtn"
+            onClick={() => setMobileMenuOpen(prev => !prev)}
+          >
+            +
+          </div>
 
-        <textarea
-          ref={textareaRef}
-          className="searchInput"
-          value={prompt}
-          placeholder="Ask anything..."
-          onChange={e =>
-            setPrompt(e.target.value)
+          <textarea
+            ref={textareaRef}
+            className="searchInput"
+            value={prompt}
+            placeholder="Ask anything..."
+            onChange={e => setPrompt(e.target.value)}
+            onKeyDown={e => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                search();
+              }
+            }}/>
+
+              <div className="voiceBtn">🎤</div>
+
+              <div
+                className="statsPill"
+                onClick={() => setShowMetrics(true)}
+              >
+                <span className="statsDot"></span>
+                <span>Stats</span>
+              </div>
+
+              <div
+                className="sendBtn"
+                onClick={search}
+              >
+                ↑
+              </div>
+
+              {/* 🔥 ADD THIS BLOCK */}
+              {mobileMenuOpen && (
+                <div className="mobileMenu">
+                  <div
+                    className="mobileMenuItem"
+                    onClick={() => {
+                      setShowMetrics(true);
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    📊 View Stats
+                  </div>
+                </div>
+              )}
+
+            </div>
+
+                </div>
+
+              );
+
           }
-          onKeyDown={e => {
-
-            if (
-              e.key === "Enter" &&
-              !e.shiftKey
-            ) {
-
-              e.preventDefault();
-              search();
-
-            }
-
-          }}
-        />
-
-        <div className="voiceBtn">🎤</div>
-
-        <div
-          className="sendBtn"
-          onClick={search}
-        >
-          ↑
-        </div>
-
-      </div>
-
-    </div>
-
-  );
-
-}
