@@ -409,7 +409,7 @@ private get openrouterKey(): string {
   model: string,
   onToken: (token: string) => void
 ): Promise<void> {
-  console.log("OPENROUTER KEY VALUE:", this.openrouterKey);
+  // console.log("OPENROUTER KEY VALUE:", this.openrouterKey);
   const response = await fetch(
     "https://openrouter.ai/api/v1/chat/completions",
     {

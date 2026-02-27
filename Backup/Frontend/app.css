@@ -3,10 +3,11 @@
 .page{
 background:#0b1020;
 min-height:100vh;
-padding-bottom:180px;
+padding-bottom:140px;
 }
 
 .container{
+padding-top:10px;
 width:100%;
 max-width:1800px;
 margin:auto;
@@ -18,9 +19,9 @@ z-index:2;
 /* ================= HEADER ================= */
 
 .title{
-font-size:42px;
+font-size:32px;
 font-weight:700;
-margin:24px 0 64px 0;
+margin:18px 0 24px 0;
 font-family:Inter, sans-serif;
 color:white;
 transition:margin 400ms ease;
@@ -32,10 +33,10 @@ transition:margin 400ms ease;
 
 display:flex;
 
-gap:20px;
+gap:16px;
 position:relative;
 z-index:1;
-padding:20px 20px; 
+padding:10px 10px; 
 
 overflow-x:auto;
 
@@ -62,27 +63,25 @@ display:none;
 
 .card{
 
-min-width:380px;
-max-width:380px;
-position: relative;
-overflow:hidden; 
+width:320px;
+min-width:320px;
+max-width:320px;
+
 height:620px;
 
 background:#111827;
-
-border-radius:14px;
-
-padding:16px;
+border-radius:12px;
 
 display:flex;
-
 flex-direction:column;
 
 flex-shrink:0;
+border:1px solid #1f2937;
 
-border:2px solid #1f2937;
+padding:12px;
 
-transition:all .25s ease;
+position:relative;
+overflow:hidden;
 
 }
 
@@ -95,7 +94,12 @@ box-shadow:
     inset 0 0 4px rgba(34,197,94,.08);
 
 }
-
+.cardBody{
+flex:1;
+min-height:0;
+display:flex;
+flex-direction:column;
+}
 /* FAILED / IDLE */
 
 /* FAILED */
@@ -135,9 +139,7 @@ margin-bottom:10px;
 .modelName{
 
 font-weight:600;
-
-font-size:16px;
-
+font-size:13px;
 color:#f3f4f6;
 
 }
@@ -168,7 +170,7 @@ border-radius:8px;
 
 cursor:pointer;
 
-font-size:13px;
+font-size:12px;
 
 transition:.2s;
 
@@ -180,27 +182,29 @@ background:#1d4ed8;
 
 /* ================= RESPONSE ================= */
 
-.responseBox{
+.responseBox {
 
-flex:1;
+flex: 1;
 
-overflow:auto;
+overflow-y: auto;
+min-height:0;
+margin-top: 6px;
 
-padding-right:4px;
+padding-right: 4px;
 
 scrollbar-width:none;
 
 }
 
-.responseBox::-webkit-scrollbar{
-display:none;
+.responseBox::-webkit-scrollbar {
+display: none;
 }
 
 .markdown{
 
-font-size:14px;
+font-size:12.5px;
 
-line-height:1.6;
+line-height:1.45;
 
 color:#e5e7eb;
 
@@ -214,27 +218,33 @@ font-family:Inter, sans-serif;
 
 position:fixed;
 
-bottom:110px;
+bottom:95px;
 
 left:50%;
 
-transform:translateX(-50%) translateY(20px);
+transform:translateX(-50%);
 
-width:50%;
+width:34%;
+max-width:520px;
 
-background:#1f2937;
+background:rgba(31,41,55,0.72);
 
-border-radius:14px;
+backdrop-filter:blur(10px);
 
-padding:16px;
+border-radius:12px;
 
-box-shadow:0 0 20px rgba(0,0,0,.5);
+padding:10px 14px;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,0.35);
+
+border:1px solid rgba(255,255,255,0.06);
 
 z-index:50;
 
 opacity:0;
 
-transition:all .4s ease;
+transition:all .25s ease;
 
 }
 
@@ -258,13 +268,13 @@ border-collapse:collapse;
 
 .metricsTable th{
 
-font-weight:600;
+font-weight:500;
 
 color:#9ca3af;
 
-font-size:13px;
+font-size:11px;
 
-padding-bottom:6px;
+padding-bottom:4px;
 
 }
 
@@ -272,11 +282,22 @@ padding-bottom:6px;
 
 text-align:center;
 
-padding:4px 0;
+padding:2px 0;
 
-font-size:14px;
+font-size:12px;
 
 color:#e5e7eb;
+
+}
+.metricsTable tr{
+
+transition:background .15s ease;
+
+}
+
+.metricsTable tr:hover{
+
+background:rgba(255,255,255,0.04);
 
 }
 
@@ -292,13 +313,17 @@ left:50%;
 
 transform:translateX(-50%);
 
-width:60%;
+width:55%;
 
-background:#111827;
+background:rgba(17,24,39,0.75);
+
+backdrop-filter:blur(10px);
+
+border:1px solid rgba(255,255,255,0.05);
 
 border-radius:28px;
 
-padding:12px 14px;
+padding:10px 14px;
 
 display:flex;
 
@@ -306,7 +331,10 @@ align-items:center;
 
 gap:10px;
 
-box-shadow:0 0 20px rgba(0,0,0,.6);
+box-shadow:
+0 10px 30px rgba(0,0,0,0.35);
+
+z-index:100;
 
 }
 
@@ -517,19 +545,6 @@ opacity:.55;
 }
 
 
-/* ================= SMOOTH CARD ANIMATION ================= */
-
-.card{
-
-transition:
-
-transform 600ms cubic-bezier(.2,.8,.2,1),
-
-box-shadow .35s ease,
-
-border-color .35s ease;
-
-}
 
 
 /* ================= METRICS PANEL POLISH ================= */
@@ -739,8 +754,8 @@ transform 600ms cubic-bezier(.22,.61,.36,1);
   align-items: center;
   gap: 12px;
 
-  margin-top: 8px;
-  margin-bottom: 8px;
+  margin-top: 6px;
+  margin-bottom: 6px;
 
 }
 
@@ -748,7 +763,7 @@ transform 600ms cubic-bezier(.22,.61,.36,1);
 
   width: 48px;
 
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
 
   color: #e5e7eb;
@@ -1101,7 +1116,7 @@ left:140%;
 
 filter: blur(2px);
 
-opacity: 0.75;
+opacity: 0.45;
 
 transform: scale(0.995);
 
@@ -1122,22 +1137,6 @@ filter: none !important;
 
 }
 
-/* ================= GLOBAL REVEAL BLUR ================= */
-
-.card.globalBlur {
-
-filter: blur(6px);
-
-opacity: 0.35;
-
-transform: scale(0.98);
-
-transition:
-filter 300ms ease,
-opacity 300ms ease,
-transform 300ms ease;
-
-}
 
 /* ================= WINNER REVEAL OVERLAY ================= */
 
@@ -1217,4 +1216,237 @@ opacity:1;
 
 }
 
+}
+.metricsHeader{
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:12px;
+color:#9ca3af;
+margin-bottom:6px;
+}
+
+.metricsHeader button{
+background:none;
+border:none;
+color:#9ca3af;
+cursor:pointer;
+font-size:14px;
+}
+.statsBtn{
+width:36px;
+height:36px;
+border-radius:50%;
+background:#1f2937;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+color:#e5e7eb;
+}
+@media (max-width: 768px){
+  .metricsPanel{
+    width:90%;
+    max-width:none;
+  }
+}
+
+.metricsPanel{
+width:34%;
+max-width:520px;
+}
+
+/* ================= MOBILE METRICS + SEARCH CLEAN LAYOUT ================= */
+/* ================= MOBILE ACTION MENU ================= */
+
+/* ================= MOBILE ACTION MENU ================= */
+
+.mobileMenu{
+
+  position:absolute;
+
+  bottom:70px;
+  left:10px;
+
+  background:#1f2937;
+
+  border-radius:14px;
+
+  padding:8px;
+
+  box-shadow:0 15px 40px rgba(0,0,0,.5);
+
+  animation:fadeUp .2s ease;
+
+  z-index:5000; /* increase */
+
+  min-width:150px;
+}
+
+.mobileMenuItem{
+
+  padding:10px 14px;
+
+  color:#e5e7eb;
+
+  font-size:13px;
+
+  cursor:pointer;
+
+  border-radius:10px;
+
+  white-space:nowrap;
+}
+
+.mobileMenuItem:hover{
+  background:#374151;
+}
+
+@keyframes fadeUp{
+  from{ opacity:0; transform:translateY(10px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+
+@media (max-width: 768px){
+
+  /* ===== METRICS SHEET ===== */
+
+  .metricsPanel,
+  .metricsPanel.show{
+
+    position:fixed !important;
+
+    left:12px !important;
+    right:12px !important;
+
+    bottom:90px !important;
+
+    transform:none !important;
+
+    width:auto !important;
+    max-width:none !important;
+
+    border-radius:16px !important;
+
+    padding:14px !important;
+
+    background:rgba(15,23,42,0.98) !important;
+
+    box-shadow:
+      0 12px 40px rgba(0,0,0,0.55) !important;
+
+    max-height:220px;
+    overflow-y:auto;
+    overflow-x:auto;
+
+    backdrop-filter:blur(12px);
+  }
+
+  .metricsTable{
+    font-size:11px;
+  }
+
+  .metricsTable th{
+    font-size:10px;
+  }
+
+  .metricsTable td{
+    font-size:11px;
+    padding:3px 0;
+  }
+
+  .voiceBtn{
+    display:none !important;
+  }
+
+  .statsPill{
+    display:none !important;
+  }
+
+}
+
+/* ================= STATS PILL (WEB) ================= */
+
+.statsPill{
+
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  padding:8px 14px;
+
+  border-radius:999px;
+
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.08);
+
+  color:#e5e7eb;
+  font-size:13px;
+
+  cursor:pointer; /* VERY IMPORTANT */
+
+  transition:all .2s ease;
+}
+
+.statsPill:hover{
+  background:rgba(255,255,255,0.08);
+}
+
+.statsDot{
+
+  width:8px;
+  height:8px;
+
+  border-radius:50%;
+  background:#22c55e;
+
+  box-shadow:
+    0 0 6px rgba(34,197,94,.6);
+}
+
+/* ======================================
+   CompareAI True Visible Blade Sweep
+   ====================================== */
+
+.logo-blade {
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+
+  color: transparent;
+
+  background: linear-gradient(
+    115deg,
+    #ffffff 0%,
+    #ffffff 35%,
+
+    /* Leading glow */
+    rgba(0, 180, 255, 0.5) 42%,
+
+    /* Blade core */
+    rgba(0, 220, 255, 1) 50%,
+
+    /* Trailing glow */
+    rgba(0, 180, 255, 0.5) 58%,
+
+    #ffffff 65%,
+    #ffffff 100%
+  );
+
+  background-size: 200% 100%;
+  background-position: -120% 0;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  animation: bladeSweep 7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes bladeSweep {
+  0% {
+    background-position: -120% 0;
+  }
+  100% {
+    background-position: 120% 0;
+  }
 }
